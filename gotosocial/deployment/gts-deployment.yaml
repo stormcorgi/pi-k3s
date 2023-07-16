@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gotosocial
+  labels:
+    app: gotosocial
+    io.kompose.service: gotosocial
+spec:
+  selector:
+    matchLabels:
+      io.kompose.service: gotosocial
+      app: gotosocial
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.network/pi-k3s-gotosocial: "true"
+        io.kompose.service: gotosocial
+        app: gotosocial
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: raspberrypi
+      containers:
+        - env:
+            - name: GTS_DB_ADDRESS
+              value: /gotosocial/database/sqlite.db
+            - name: GTS_DB_TYPE
+              value: sqlite
+            - name: GTS_HOST
+              value: gts.motcha.tech
+            - name: GTS_PROTOCOL
+              value: http
+            - name: GTS_LETSENCRYPT_ENABLED
+              value: "false"
+            - name: GTS_TRUSTED_PROXIES
+              value: "100.64.1.0/22"
+            - name: GTS_MEDIA_REMOTE_CACHE_DAYS
+              value: "1"
+          image: superseriousbusiness/gotosocial:0.9.0
+          name: gotosocial
+          ports:
+            - containerPort: 8080
+              hostIP: 0.0.0.0
+              hostPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: gts-persistent-storage
+              mountPath: /gotosocial/storage
+            - name: gts-database-storage
+              mountPath: /gotosocial/database
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities: {}
+            privileged: true
+            readOnlyRootFilesystem: false
+            seLinuxOptions: {}
+      restartPolicy: Always
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+          - 8.8.8.8
+      volumes:
+        - name: gts-persistent-storage
+          persistentVolumeClaim:
+            claimName: gts-pv-claim
+        - name: gts-database-storage
+          persistentVolumeClaim:
+            claimName: local-claim

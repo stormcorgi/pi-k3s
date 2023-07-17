@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose-resolved.yaml
+    kompose.version: 1.29.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: sidekiq-default
+  name: sidekiq-default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      io.kompose.service: sidekiq-default
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose-resolved.yaml
+        kompose.version: 1.29.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/mastodon-default: "true"
+        io.kompose.service: sidekiq-default
+    spec:
+      nodeSelector:
+        role: worker
+      containers:
+        - args:
+            - bundle
+            - exec
+            - sidekiq
+            - -c
+            - "5"
+            - -q
+            - default
+            - -q
+            - push
+            - -q
+            - ingress
+            - -q
+            - pull
+          envFrom:
+            - secretRef:
+                name: mastodon-env
+          image: tootsuite/mastodon:v4.1.4
+          name: sidekiq-default
+          resources: {}
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+          - 8.8.8.8
+      restartPolicy: Always
+status: {}

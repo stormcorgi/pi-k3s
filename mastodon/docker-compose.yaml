@@ -1,0 +1,12 @@
+version: '3'
+services:
+  sidekiq_default:
+    image: tootsuite/mastodon:v4.1.4
+    restart: always
+    env_file: env.production
+    command: bundle exec sidekiq -c 10 -q default -q push -q ingress -q pull
+  sidekiq_pull:
+    image: tootsuite/mastodon:v4.1.4
+    restart: always
+    env_file: env.production
+    command: bundle exec sidekiq -c 10 -q pull -q default -q push -q ingress 

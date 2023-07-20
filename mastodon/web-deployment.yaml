@@ -32,15 +32,15 @@ spec:
             - -c
             - rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000
           image: ghcr.io/mastodon/mastodon
-          livenessProbe:
-            exec:
-              command:
-                - wget -q --spider --proxy=off localhost:3000/health || exit 1
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #       - wget -q --spider --proxy=off localhost:3000/health || exit 1
           name: web
           ports:
             - containerPort: 3000
               hostIP: 0.0.0.0
-              hostPort: 3000
+              # hostPort: 3000
               protocol: TCP
           resources: {}
           envFrom:

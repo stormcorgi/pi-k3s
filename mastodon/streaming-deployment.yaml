@@ -31,15 +31,15 @@ spec:
             - node
             - ./streaming
           image: ghcr.io/mastodon/mastodon
-          livenessProbe:
-            exec:
-              command:
-                - wget -q --spider --proxy=off localhost:4000/api/v1/streaming/health || exit 1
+          # livenessProbe:
+          #   exec:
+          #     command:
+          #       - wget -q --spider --proxy=off localhost:4000/api/v1/streaming/health || exit 1
           name: streaming
           ports:
             - containerPort: 4000
               hostIP: 0.0.0.0
-              hostPort: 4000
+              hostPort: 4040
               protocol: TCP
           resources: {}
           envFrom:

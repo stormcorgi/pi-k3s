@@ -6,13 +6,13 @@ metadata:
     kompose.version: 1.29.0 (HEAD)
   creationTimestamp: null
   labels:
-    io.kompose.service: sidekiq-default
-  name: sidekiq-default
+    io.kompose.service: sidekiq-all
+  name: sidekiq-all
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: sidekiq-default
+      io.kompose.service: sidekiq-all
   strategy: {}
   template:
     metadata:
@@ -22,40 +22,22 @@ spec:
       creationTimestamp: null
       labels:
         io.kompose.network/mastodon-default: "true"
-        io.kompose.service: sidekiq-default
+        io.kompose.service: sidekiq-all
     spec:
       nodeSelector:
         role: worker
       containers:
-        - name: sidekiq-default
-          image: ghcr.io/mastodon/mastodon:v4.1.5
-          args:
+        - args:
             - bundle
             - exec
             - sidekiq
             - -c
             - "5"
-            - -q
-            - default
-            - -q
-            - push
-            - -q
-            - ingress
-            - -q
-            - pull
+          image: ghcr.io/mastodon/mastodon:v4.1.5
+          name: sidekiq-all
+          resources: {}
           envFrom:
             - secretRef:
                 name: mastodon-env
-          resources:
-            limits:
-              cpu: 1000m
-              memory: 512Mi
-            requests:
-              cpu: 500m
-              memory: 350Mi
-      dnsConfig:
-        nameservers:
-          - 1.1.1.1
-          - 8.8.8.8
       restartPolicy: Always
 status: {}

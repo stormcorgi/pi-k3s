@@ -6,13 +6,13 @@ metadata:
     kompose.version: 1.29.0 (HEAD)
   creationTimestamp: null
   labels:
-    io.kompose.service: streaming
-  name: streaming
+    io.kompose.service: web
+  name: web
 spec:
   replicas: 2
   selector:
     matchLabels:
-      io.kompose.service: streaming
+      io.kompose.service: web
   strategy: {}
   template:
     metadata:
@@ -22,32 +22,56 @@ spec:
       creationTimestamp: null
       labels:
         io.kompose.network/mastodon-default: "true"
-        io.kompose.service: streaming
+        io.kompose.service: web
     spec:
       nodeSelector:
         role: worker
       containers:
         - args:
-            - node
-            - ./streaming
+            - bash
+            - -c
+            - rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000
           image: ghcr.io/mastodon/mastodon:v4.1.5
           # livenessProbe:
           #   exec:
           #     command:
-          #       - wget -q --spider --proxy=off localhost:4000/api/v1/streaming/health || exit 1
-          name: streaming
+          #       - wget -q --spider --proxy=off localhost:3000/health || exit 1
+          name: web
           ports:
-            - containerPort: 4000
+            - containerPort: 3000
               hostIP: 0.0.0.0
-              hostPort: 4040
+              # hostPort: 3000
               protocol: TCP
           resources: {}
           envFrom:
             - secretRef:
                 name: mastodon-env
-      dnsConfig:
-        nameservers:
-          - 1.1.1.1
-          - 8.8.8.8
       restartPolicy: Always
 status: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.29.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: web
+  name: web
+spec:
+  ports:
+    - name: "3000"
+      port: 3000
+      targetPort: 3000
+  selector:
+    io.kompose.service: web
+  type: LoadBalancer
+status:
+  # loadBalancer: {}
+  loadBalancer:
+    ingress:
+      - ip: 100.64.1.140
+      - ip: 100.64.1.141
+      - ip: 100.64.1.142

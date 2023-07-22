@@ -28,7 +28,7 @@ spec:
         role: worker
       containers:
         - name: sidekiq-default
-          image: tootsuite/mastodon:v4.1.4
+          image: ghcr.io/mastodon/mastodon:v4.1.5
           args:
             - bundle
             - exec

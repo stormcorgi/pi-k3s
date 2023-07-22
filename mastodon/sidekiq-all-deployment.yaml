@@ -33,7 +33,7 @@ spec:
             - sidekiq
             - -c
             - "5"
-          image: tootsuite/mastodon:v4.1.4
+          image: ghcr.io/mastodon/mastodon:v4.1.5
           name: sidekiq-all
           resources: {}
           envFrom:

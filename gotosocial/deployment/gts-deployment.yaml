@@ -19,11 +19,15 @@ spec:
         io.kompose.service: gotosocial
         app: gotosocial
     spec:
-      replicas: 1
       nodeSelector:
         kubernetes.io/hostname: raspberrypi
       containers:
-        - env:
+        - name: gotosocial
+          image: superseriousbusiness/gotosocial:0.9.0
+          # if you want to maintenance, override CMD below lines
+          #   command:
+          #     - /sbin/init
+          env:
             - name: GTS_DB_ADDRESS
               value: /gotosocial/database/sqlite.db
             - name: GTS_DB_TYPE
@@ -38,8 +42,6 @@ spec:
               value: "10.42.0.1/16"
             - name: GTS_MEDIA_REMOTE_CACHE_DAYS
               value: "1"
-          image: superseriousbusiness/gotosocial:0.9.0
-          name: gotosocial
           ports:
             - containerPort: 8080
               hostIP: 0.0.0.0

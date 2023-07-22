@@ -59,10 +59,6 @@ spec:
             readOnlyRootFilesystem: false
             seLinuxOptions: {}
       restartPolicy: Always
-      dnsConfig:
-        nameservers:
-          - 1.1.1.1
-          - 8.8.8.8
       volumes:
         - name: gts-persistent-storage
           persistentVolumeClaim:
@@ -70,3 +66,28 @@ spec:
         - name: gts-database-storage
           persistentVolumeClaim:
             claimName: local-claim
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.29.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: gotosocial
+  name: gotosocial
+spec:
+  ports:
+    - name: "8088"
+      port: 8088
+      targetPort: 8080
+  selector:
+    io.kompose.service: gotosocial
+  type: LoadBalancer
+status:
+  # loadBalancer: {}
+  loadBalancer:
+    ingress:
+      - ip: 100.64.1.140

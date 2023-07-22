@@ -16,3 +16,18 @@ spec:
   mountOptions:
     - nfsvers=3
     - rw
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gts-pv-claim
+  labels:
+    app: gotosocial
+  annotations:
+    "volume.beta.kubernetes.io/storage-class": "slow"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi

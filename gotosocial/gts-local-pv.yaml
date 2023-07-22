@@ -19,3 +19,17 @@ spec:
               operator: In
               values:
                 - raspberrypi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-claim
+  labels:
+    app: gotosocial
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 25Gi

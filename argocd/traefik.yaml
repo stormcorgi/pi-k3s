@@ -1,0 +1,38 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: argocd-server
+  namespace: argocd
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`argocd.motcha.tech`)
+      priority: 10
+      services:
+        - name: argocd-server
+          port: 8080
+    - kind: Rule
+      match: Host(`argocd.motcha.tech`) && Headers(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: argocd-server
+          port: 8080
+          scheme: h2c
+  tls:
+    certResolver: default
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-server
+  namespace: argocd
+spec:
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: argocd-server
+  type: ClusterIP

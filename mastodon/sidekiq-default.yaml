@@ -9,7 +9,6 @@ metadata:
     io.kompose.service: sidekiq-default
   name: sidekiq-default
 spec:
-  replicas: 1
   selector:
     matchLabels:
       io.kompose.service: sidekiq-default

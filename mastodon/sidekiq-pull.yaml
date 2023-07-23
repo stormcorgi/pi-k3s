@@ -9,7 +9,6 @@ metadata:
     io.kompose.service: sidekiq-pull
   name: sidekiq-pull
 spec:
-  replicas: 1
   selector:
     matchLabels:
       io.kompose.service: sidekiq-pull

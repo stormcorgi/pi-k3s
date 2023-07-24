@@ -52,5 +52,8 @@ spec:
             requests:
               cpu: 500m
               memory: 350Mi
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
       restartPolicy: Always
 status: {}

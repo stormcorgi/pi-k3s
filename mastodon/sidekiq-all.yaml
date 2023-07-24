@@ -39,5 +39,8 @@ spec:
           envFrom:
             - secretRef:
                 name: mastodon-env
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
       restartPolicy: Always
 status: {}

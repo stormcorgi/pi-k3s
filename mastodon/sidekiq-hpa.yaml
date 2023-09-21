@@ -1,65 +1,65 @@
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: sidekiq-default
-  namespace: default
-spec:
-  maxReplicas: 5
-  minReplicas: 1
-  metrics:
-    - resource:
-        name: cpu
-        target:
-          averageUtilization: 50
-          type: Utilization
-      type: Resource
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: sidekiq-default
-  behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 30 # デフォルトは0
-      policies:
-        - type: Percent
-          value: 50
-          periodSeconds: 30
-    scaleDown:
-      stabilizationWindowSeconds: 300 # デフォルトは300(5分)
-      policies:
-        - type: Percent
-          value: 20
-          periodSeconds: 300
----
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: sidekiq-pull
-  namespace: default
-spec:
-  maxReplicas: 5
-  minReplicas: 1
-  metrics:
-    - resource:
-        name: cpu
-        target:
-          averageUtilization: 50
-          type: Utilization
-      type: Resource
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: sidekiq-pull
-  behavior:
-    scaleUp:
-      stabilizationWindowSeconds: 30 # デフォルトは0
-      policies:
-        - type: Percent
-          value: 50
-          periodSeconds: 30
-    scaleDown:
-      stabilizationWindowSeconds: 300 # デフォルトは300(5分)
-      policies:
-        - type: Percent
-          value: 20
-          periodSeconds: 300
+# apiVersion: autoscaling/v2
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: sidekiq-default
+#   namespace: default
+# spec:
+#   maxReplicas: 5
+#   minReplicas: 1
+#   metrics:
+#     - resource:
+#         name: cpu
+#         target:
+#           averageUtilization: 50
+#           type: Utilization
+#       type: Resource
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: sidekiq-default
+#   behavior:
+#     scaleUp:
+#       stabilizationWindowSeconds: 30 # デフォルトは0
+#       policies:
+#         - type: Percent
+#           value: 50
+#           periodSeconds: 30
+#     scaleDown:
+#       stabilizationWindowSeconds: 300 # デフォルトは300(5分)
+#       policies:
+#         - type: Percent
+#           value: 20
+#           periodSeconds: 300
+# ---
+# apiVersion: autoscaling/v2
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: sidekiq-pull
+#   namespace: default
+# spec:
+#   maxReplicas: 5
+#   minReplicas: 1
+#   metrics:
+#     - resource:
+#         name: cpu
+#         target:
+#           averageUtilization: 50
+#           type: Utilization
+#       type: Resource
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: sidekiq-pull
+#   behavior:
+#     scaleUp:
+#       stabilizationWindowSeconds: 30 # デフォルトは0
+#       policies:
+#         - type: Percent
+#           value: 50
+#           periodSeconds: 30
+#     scaleDown:
+#       stabilizationWindowSeconds: 300 # デフォルトは300(5分)
+#       policies:
+#         - type: Percent
+#           value: 20
+#           periodSeconds: 300

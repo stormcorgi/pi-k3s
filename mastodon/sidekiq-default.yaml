@@ -27,7 +27,7 @@ spec:
         role: worker
       containers:
         - name: sidekiq-default
-          image: ghcr.io/mastodon/mastodon:v4.1.5
+          image: ghcr.io/mastodon/mastodon:v4.1.8
           args:
             - bundle
             - exec

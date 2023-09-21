@@ -1,0 +1,7 @@
+# kubectl get deploy -n argocd | awk '{print $1}' | grep argo | \
+#   xargs -I{} kubectl patch deploy -n argocd {} --patch-file ./patch.yaml
+spec:
+  template:
+    spec:
+      nodeSelector:
+        role: worker

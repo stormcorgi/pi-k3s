@@ -62,7 +62,7 @@ spec:
       volumes:
         - name: gts-persistent-storage
           persistentVolumeClaim:
-            claimName: gts-pv-claim
+            claimName: gts-pic-claim
         - name: gts-database-storage
           persistentVolumeClaim:
             claimName: local-claim

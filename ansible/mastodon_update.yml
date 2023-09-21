@@ -17,3 +17,8 @@
     - name: Rewrite version value in ../mastodon/*.yaml and Apply changes with kubectl apply
       ansible.builtin.shell:
         cmd: ../mastodon/verup.sh {{ mastodon_git.json.tag_name }}
+      register: verup
+
+    - name: Display script result
+      ansible.builtin.debug:
+        msg: "{{ verup.stdout_lines }}"

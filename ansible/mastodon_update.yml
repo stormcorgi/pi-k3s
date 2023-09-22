@@ -14,11 +14,29 @@
       ansible.builtin.debug:
         msg: "latest release version is {{ mastodon_git.json.tag_name }}"
 
+    - name: Get current dir
+      ansible.builtin.command:
+        cmd: ls -R
+      register: dir
+      changed_when: false
+    - name: Display current dir
+      ansible.builtin.debug:
+        msg: "{{ dir }}"
+
+    - name: Get pod info
+      ansible.builtin.command:
+        cmd: kubectl get pods
+      register: pods
+      changed_when: false
+    - name: Display pods info
+      ansible.builtin.debug:
+        msg: "{{ pods }}"
+
     - name: Rewrite version value in ../mastodon/*.yaml and Apply changes with kubectl apply
       ansible.builtin.command:
         cmd: /bin/bash ../mastodon/verup.sh {{ mastodon_git.json.tag_name }}
       register: verup
-      changed_when: False
+      changed_when: false
 
     - name: Display script result
       ansible.builtin.debug:

@@ -1,5 +1,8 @@
 #!/bin/bash
-
+DIR="$(cd "$(dirname "$0")" && pwd -P)"
+echo $DIR
+cd $DIR || exit
+echo "verup start! target version: ${1}"
 sed -i "" -e "s/image: .*mastodon:.*/image: ghcr.io\/mastodon\/mastodon:${1}/g" *.yaml
 find ./*.yaml -print0 | xargs -0 -I {} kubectl apply -f {}
 

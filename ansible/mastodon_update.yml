@@ -15,9 +15,10 @@
         msg: "latest release version is {{ mastodon_git.json.tag_name }}"
 
     - name: Rewrite version value in ../mastodon/*.yaml and Apply changes with kubectl apply
-      ansible.builtin.shell:
-        cmd: ../mastodon/verup.sh {{ mastodon_git.json.tag_name }}
+      ansible.builtin.command:
+        cmd: /bin/bash ../mastodon/verup.sh {{ mastodon_git.json.tag_name }}
       register: verup
+      changed_when: False
 
     - name: Display script result
       ansible.builtin.debug:

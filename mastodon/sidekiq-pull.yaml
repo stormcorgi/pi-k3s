@@ -40,7 +40,7 @@ spec:
             - push
             - -q
             - ingress
-          image: ghcr.io/mastodon/mastodon:v4.1.8
+          image: ghcr.io/mastodon/mastodon:v4.2.0
           name: sidekiq-pull
           resources:
             limits:

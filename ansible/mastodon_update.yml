@@ -1,8 +1,8 @@
 ---
 - name: Update Mastodon Containers on K3s
   hosts: localhost
-  gather_facts: false
-  become: false
+  gather_facts: true
+  become: true
   tasks:
     - name: Get latest release version
       ansible.builtin.uri:
@@ -16,7 +16,7 @@
 
     - name: Get current dir
       ansible.builtin.command:
-        cmd: ls -R
+        cmd: pwd
       register: dir
       changed_when: false
     - name: Display current dir
@@ -25,7 +25,7 @@
 
     - name: Get pod info
       ansible.builtin.command:
-        cmd: kubectl get pods
+        cmd: /snap/bin/kubectl get pods
       register: pods
       changed_when: false
     - name: Display pods info
@@ -34,10 +34,9 @@
 
     - name: Rewrite version value in ../mastodon/*.yaml and Apply changes with kubectl apply
       ansible.builtin.command:
-        cmd: /bin/bash ../mastodon/verup.sh {{ mastodon_git.json.tag_name }}
+        cmd: /bin/bash /root/snap/semaphore/common/repositories/repository_2_4/mastodon/verup.sh {{ mastodon_git.json.tag_name }}
       register: verup
       changed_when: false
-
     - name: Display script result
       ansible.builtin.debug:
         msg: "{{ verup.stdout_lines }}"

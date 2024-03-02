@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: mastodon
+  labels:
+    io.kompose.service: web
+  annotations:
+    field.cattle.io/publicEndpoints: >-
+      [{"addresses":["100.64.1.140","100.64.1.141","100.64.1.142","100.64.1.241"],"port":3000,"protocol":"TCP","serviceName":"mastodon:web","allNodes":false}]
+    kompose.cmd: kompose convert
+    kompose.version: 1.29.0 (HEAD)
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{"kompose.cmd":"kompose
+      convert","kompose.version":"1.29.0
+      (HEAD)"},"creationTimestamp":null,"labels":{"io.kompose.service":"web"},"name":"web","namespace":"mastodon"},"spec":{"ports":[{"name":"3000","port":3000,"targetPort":3000}],"selector":{"io.kompose.service":"web"},"type":"LoadBalancer"},"status":{"loadBalancer":{"ingress":[{"ip":"10.0.0.224"},{"ip":"100.64.1.140"},{"ip":"100.64.1.141"},{"ip":"100.64.1.142"},{"ip":"100.64.1.241"}]}}}
+  finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+  managedFields:
+    - manager: kubectl-client-side-apply
+      operation: Update
+      apiVersion: v1
+      time: "2023-07-31T16:21:29Z"
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:kompose.cmd: {}
+            f:kompose.version: {}
+            f:kubectl.kubernetes.io/last-applied-configuration: {}
+          f:labels:
+            .: {}
+            f:io.kompose.service: {}
+        f:spec:
+          f:allocateLoadBalancerNodePorts: {}
+          f:externalTrafficPolicy: {}
+          f:internalTrafficPolicy: {}
+          f:ports:
+            .: {}
+            k:{"port":3000,"protocol":"TCP"}:
+              .: {}
+              f:name: {}
+              f:port: {}
+              f:protocol: {}
+              f:targetPort: {}
+          f:selector: {}
+          f:sessionAffinity: {}
+          f:type: {}
+    - manager: rancher
+      operation: Update
+      apiVersion: v1
+      time: "2024-02-11T04:07:24Z"
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:field.cattle.io/publicEndpoints: {}
+    - manager: k3s
+      operation: Update
+      apiVersion: v1
+      time: "2024-02-29T18:01:14Z"
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:finalizers:
+            .: {}
+            v:"service.kubernetes.io/load-balancer-cleanup": {}
+        f:status:
+          f:loadBalancer:
+            f:ingress: {}
+      subresource: status
+  selfLink: /api/v1/namespaces/mastodon/services/web
+status:
+  loadBalancer:
+    ingress:
+      - ip: 100.64.1.140
+      - ip: 100.64.1.141
+      - ip: 100.64.1.142
+      - ip: 100.64.1.143
+spec:
+  ports:
+    - name: "3000"
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+  selector:
+    io.kompose.service: web
+  type: LoadBalancer
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  allocateLoadBalancerNodePorts: true
+  internalTrafficPolicy: Cluster

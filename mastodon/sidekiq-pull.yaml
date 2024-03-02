@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: mastodon
   annotations:
     kompose.cmd: kompose convert -f docker-compose-resolved.yaml
     kompose.version: 1.29.0 (HEAD)
@@ -40,7 +41,7 @@ spec:
             - push
             - -q
             - ingress
-          image: ghcr.io/mastodon/mastodon:v4.2.0
+          image: mochiankororo/mot-mastodon:v4.2.8-spamfilter
           name: sidekiq-pull
           resources:
             limits:
